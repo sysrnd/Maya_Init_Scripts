@@ -31,7 +31,7 @@ class proceduralMenus(object):
 			avMenuPath = self.env + '/' + avMenu
 
 			if self.isValidMenu(avMenuPath):
-				#menu = self.createMenu(avMenu)
+				menu = self.createMenu(avMenu)
 				avSubmenus = self.browseDirs(avMenuPath)
 
 				for avSubmenu in avSubmenus:
@@ -42,7 +42,7 @@ class proceduralMenus(object):
 						if self.isValidSubMenu(fileInSubmenuPath):
 							command = self.parseCommandString(fileInSubmenuPath)
 							niceFileName = self.getNiceFileName(fileInSubmenuPath)
-							#self.createSubMenu(menu, avFileInSubmenu, command)
+							self.createSubMenu(menu, avFileInSubmenu, niceFileName, command)
 
 
 
@@ -113,10 +113,10 @@ class proceduralMenus(object):
 		menu = cmds.menu(direc, label=direc, parent='MayaWindow', to=True)
 		return menu
 
-	def createSubMenu(self, menuParent, subMenu, command):
+	def createSubMenu(self, menuParent, subMenu, label, command):
 		'''
 		'''
-		subMenu = cmds.menuItem(subMenu, label=subMenu, parent= menuParent, command=command, ec=True)
+		subMenu = cmds.menuItem(subMenu, label=label, parent= menuParent, command=command)
 		return subMenu
 
 
@@ -142,7 +142,10 @@ class proceduralMenus(object):
 		niceName = file.replace('.py', '')
 		niceName = niceName.replace('app', '')
 		niceName = niceName.replace('_', ' ')
-		print niceName
+
+		if niceName.startswith(' '):
+			niceName = niceName[1: len(niceName)]
+
 		return niceName
 
 menu = proceduralMenus()
