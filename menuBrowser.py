@@ -1,9 +1,5 @@
 #TODO
-#command
-#title
 #filter by user
-#always return full path
-
 import os
 import maya.cmds as cmds
 import Utils.os_Find_Env.findEnv_app as findEnv
@@ -15,7 +11,7 @@ class proceduralMenus(object):
 		Creates a list of folders where it shouldn't look into
 
 		'''
-		self.invalidFolders = ['Maya_Init_Scripts', '.git', 'Utils', 'Modules']
+		self.invalidFolders = ['Maya_Init_Scripts', '.git', 'Utils', 'Modules', 'RenUI', 'Old', 'Dev']
 		self.invalidFiles = ['__init__', '.pyc', 'old']
 		self.env = findEnv.findEnvVar_()
 		
