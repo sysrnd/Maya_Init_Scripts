@@ -7,7 +7,6 @@
 import os
 import maya.cmds as cmds
 import Utils.os_Find_Env.findEnv_app as findEnv
-import getpass
 
 class proceduralMenus(object):
 	def __init__(self):
@@ -28,20 +27,19 @@ class proceduralMenus(object):
 
 		for avMenu in avMenus:
 			#concatenate path
-			avMenuPath = self.env + '/' + avMenu
-
-			if self.isValidMenu(avMenuPath):
-				menu = self.createMenu(avMenu)
-				avSubmenus = self.browseDirs(avMenuPath)
+			if self.isValidMenu(avMenu):
+				niceMenuName = self.getNiceFileName(avMenu)
+				menu = self.createMenu(niceMenuName)
+				avSubmenus = self.browseDirs(avMenu)
 
 				for avSubmenu in avSubmenus:
-					avSubmenuPath = avMenuPath + '/' + avSubmenu
-					filesInSubmenus = self.browseFiles(avSubmenuPath)
+					filesInSubmenus = self.browseFiles(avSubmenu)
+
 					for avFileInSubmenu in filesInSubmenus:
-						fileInSubmenuPath = avSubmenuPath + '/' + avFileInSubmenu
-						if self.isValidSubMenu(fileInSubmenuPath):
-							command = self.parseCommandString(fileInSubmenuPath)
-							niceFileName = self.getNiceFileName(fileInSubmenuPath)
+						if self.isValidSubMenu(avFileInSubmenu):
+							
+							command = self.parseCommandString(avFileInSubmenu)
+							niceFileName = self.getNiceFileName(avFileInSubmenu)
 							self.createSubMenu(menu, avFileInSubmenu, niceFileName, command)
 
 
@@ -54,8 +52,9 @@ class proceduralMenus(object):
 
 		for dirs in os.listdir(path):
 			dirPath = path + '/' + dirs
+
 			if os.path.isdir(dirPath):
-					menus.append(dirs)
+					menus.append(dirPath)
 
 		return menus
 
@@ -67,8 +66,9 @@ class proceduralMenus(object):
 
 		for file in os.listdir(path):
 			filePath = path + '/' + file
+
 			if os.path.isfile(filePath):
-				files.append(file)
+				files.append(filePath)
 
 		return files
 
@@ -92,8 +92,8 @@ class proceduralMenus(object):
 		'''
 		fileName = file.split('/')[-1]
 
-
 		isValid = False
+
 		#unnecesary
 		if os.path.isdir(file):
 			isValid = False
@@ -110,6 +110,7 @@ class proceduralMenus(object):
 	def createMenu(self, direc):
 		'''
 		'''
+
 		menu = cmds.menu(direc, label=direc, parent='MayaWindow', to=True)
 		return menu
 
@@ -128,13 +129,6 @@ class proceduralMenus(object):
 		relativePath = relativePath.replace('.py', '')
 		parsedPath = 'import ' + relativePath + '; ' + 'reload(' + relativePath + ')'
 		return parsedPath
-
-	def splitLabelScreen(self, file):
-
-		label = file.split('.')[0]
-		label = label.strip('app')
-		
-		return label
 
 	def getNiceFileName(self, path):
 
