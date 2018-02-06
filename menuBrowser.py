@@ -31,17 +31,18 @@ class proceduralMenus(object):
 			avMenuPath = self.env + '/' + avMenu
 
 			if self.isValidMenu(avMenuPath):
-				menu = self.createMenu(avMenu)
+				#menu = self.createMenu(avMenu)
 				avSubmenus = self.browseDirs(avMenuPath)
 
 				for avSubmenu in avSubmenus:
 					avSubmenuPath = avMenuPath + '/' + avSubmenu
 					filesInSubmenus = self.browseFiles(avSubmenuPath)
 					for avFileInSubmenu in filesInSubmenus:
-						filesInSubmenuPath = avSubmenuPath + '/' + avFileInSubmenu
-						if self.isValidSubMenu(filesInSubmenuPath):
-							command = self.parseCommandString(filesInSubmenuPath)
-							self.createSubMenu(menu, avFileInSubmenu, command)
+						fileInSubmenuPath = avSubmenuPath + '/' + avFileInSubmenu
+						if self.isValidSubMenu(fileInSubmenuPath):
+							command = self.parseCommandString(fileInSubmenuPath)
+							niceFileName = self.getNiceFileName(fileInSubmenuPath)
+							#self.createSubMenu(menu, avFileInSubmenu, command)
 
 
 
@@ -109,13 +110,13 @@ class proceduralMenus(object):
 	def createMenu(self, direc):
 		'''
 		'''
-		menu = cmds.menu(direc, label=direc, parent='MayaWindow')
+		menu = cmds.menu(direc, label=direc, parent='MayaWindow', to=True)
 		return menu
 
 	def createSubMenu(self, menuParent, subMenu, command):
 		'''
 		'''
-		subMenu = cmds.menuItem(subMenu, label=subMenu, parent= menuParent, command=command)
+		subMenu = cmds.menuItem(subMenu, label=subMenu, parent= menuParent, command=command, ec=True)
 		return subMenu
 
 
@@ -124,6 +125,7 @@ class proceduralMenus(object):
 		'''
 		relativePath = path.replace(self.env + '/', '')
 		relativePath = relativePath.replace('/', '.')
+		relativePath = relativePath.replace('.py', '')
 		parsedPath = 'import ' + relativePath + '; ' + 'reload(' + relativePath + ')'
 		return parsedPath
 
@@ -134,10 +136,14 @@ class proceduralMenus(object):
 		
 		return label
 
-	def getFileName(self, path):
+	def getNiceFileName(self, path):
 
 		file = path.split('/')[-1]
-		return file
+		niceName = file.replace('.py', '')
+		niceName = niceName.replace('app', '')
+		niceName = niceName.replace('_', ' ')
+		print niceName
+		return niceName
 
 menu = proceduralMenus()
 menu.main()
