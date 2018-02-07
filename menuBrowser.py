@@ -1,5 +1,6 @@
 #TODO
 #filter by user
+#delete menu in case there aren't any valid submenus found
 import os
 import maya.cmds as cmds
 import Utils.os_Find_Env.findEnv_app as findEnv
@@ -13,7 +14,8 @@ class proceduralMenus(object):
 		'''
 		self.invalidFolders = ['Maya_Init_Scripts', '.git', 'Utils', 'Modules', 'RenUI', 'Old', 'Dev']
 		self.invalidFiles = ['__init__', '.pyc', 'old']
-		self.env = findEnv.findEnvVar_()
+		#self.env = findEnv.findEnvVar_()
+		self.env = 'Z:/RnD/Pipeline/Maya/Scripts/'
 		
 		self.menus = []
 		self.submenus = []
