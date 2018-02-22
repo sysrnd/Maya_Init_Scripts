@@ -1,6 +1,8 @@
 #TODO
 #filter by user
 #delete menu in case there aren't any valid submenus found
+#replace 2 defs of submenu by *args !!
+
 import os
 import maya.cmds as cmds
 import Utils.os_Find_Env.findEnv_app as findEnv
@@ -14,20 +16,22 @@ class proceduralMenus(object):
 		'''
 		self.invalidFolders = ['Maya_Init_Scripts', '.git', 'Utils', 'Modules', 'RenUI', 'Old', 'Dev']
 		self.invalidFiles = ['__init__', '.pyc', 'old']
-		#self.env = findEnv.findEnvVar_()
-		self.env = 'Z:/RnD/Pipeline/Maya/Scripts/'
+		self.env = findEnv.findEnvVar_()
+		#self.env = 'Z:/RnD/Pipeline/Maya/Scripts/'
 		
 		self.menus = []
 		self.submenus = []
+		self.mkfMenuName = 'MKF_Tools'
 
 	def main(self):
+		mkfToolsMenu = self.createMenu(self.mkfMenuName)
+
 		avMenus = self.browseDirs(self.env)
 
 		for avMenu in avMenus:
-			#concatenate path
 			if self.isValidMenu(avMenu):
 				niceMenuName = self.getNiceFileName(avMenu)
-				menu = self.createMenu(niceMenuName)
+				menu = self.createSubMenuParent(niceMenuName, mkfToolsMenu)
 				avSubmenus = self.browseDirs(avMenu)
 
 				for avSubmenu in avSubmenus:
@@ -118,9 +122,15 @@ class proceduralMenus(object):
 		subMenu = cmds.menuItem(subMenu, label=label, parent= menuParent, command=command)
 		return subMenu
 
+	def createSubMenuParent(self, subMenu, menuParent):
+		'''
+		'''
+		subMenu = cmds.menuItem(subMenu, label=subMenu, parent= menuParent, sm=True)
+		return subMenu
 
 	def parseCommandString(self, path):
 		'''
+		creates the python command.
 		'''
 		relativePath = path.replace(self.env + '/', '')
 		relativePath = relativePath.replace('/', '.')
