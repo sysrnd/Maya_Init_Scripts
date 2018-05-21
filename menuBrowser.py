@@ -5,6 +5,7 @@
 
 import os
 import maya.cmds as cmds
+import maya.mel as mel
 import Utils.os_Find_Env.findEnv_app as findEnv
 
 class proceduralMenus(object):
@@ -151,3 +152,6 @@ class proceduralMenus(object):
 
 menu = proceduralMenus()
 menu.main()
+
+#jobNum = cmds.scriptJob(ro=False, e= ['''timeChanged''',"""maya.mel.eval('evalDeferred -lp "menuItem -e -enable 0 timeSliderPlayblastItem";')"""], protected=True)
+#jobNum = cmds.scriptJob(ro=False, e= ['''timeChanged''',"""maya.mel.eval('evalDeferred -lp "menuItem -e -enable 0 playblastItem";')"""], protected=True)
