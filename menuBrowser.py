@@ -9,12 +9,12 @@ import Utils.os_Find_Env.findEnv_app as findEnv
 
 class proceduralMenus(object):
 	def __init__(self):
-		'''
+		'''a
 		Initiliazes env vars of MAYA_SCRIPT_PATH
 		Creates a list of folders where it shouldn't look into
 
 		'''
-		self.invalidFolders = ['Maya_Init_Scripts', '.git', 'Utils', 'Modules', 'RenUI', 'Old', 'Dev']
+		self.invalidFolders = ['Maya_Init_Scripts', '.git', 'Utils', 'Modules', 'RenUI', 'Old', 'Dev', 'Plug-ins']
 		self.invalidFiles = ['__init__', '.pyc', 'old']
 		self.env = findEnv.findEnvVar_()
 		#self.env = 'Z:/RnD/Pipeline/Maya/Scripts/'
@@ -51,7 +51,6 @@ class proceduralMenus(object):
 		'''
 		'''
 		menus = []
-
 		for dirs in os.listdir(path):
 			dirPath = path + '/' + dirs
 
